@@ -1,4 +1,13 @@
+<div style="text-align: center">
+    <img src="pycobello.png" width="200">
+</div>
+
 # pycobello
+
+[![PyPI version](https://img.shields.io/pypi/v/pycobello?style=flat-square)](https://pypi.org/project/pycobello/)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue?style=flat-square)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/github/license/pycobello/pycobello?style=flat-square)](LICENSE)
+[![CI](https://github.com/pycobello/pycobello/actions/workflows/ci.yml/badge.svg?style=flat-square)](https://github.com/pycobello/pycobello/actions/workflows/ci.yml)
 
 A blazing fast, dependency-light static site generator (SSG) for Python 3.12+.
 
