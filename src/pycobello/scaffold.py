@@ -42,6 +42,7 @@ def create_new(kind: str, title: str, project_root: str) -> None:
 
 def _slug(s: str) -> str:
     from slugify import slugify
+
     return slugify(s, lowercase=True)
 
 
@@ -50,7 +51,8 @@ def _write_config(root: Path) -> None:
     if cfg.exists():
         print(f"{cfg} already exists; skipping.")
         return
-    cfg.write_text("""# pycobello config
+    cfg.write_text(
+        """# pycobello config
 site:
   title: My Site
   base_url: ""
@@ -76,7 +78,9 @@ collections:
 
 plugins:
   enabled: []
-""", encoding="utf-8")
+""",
+        encoding="utf-8",
+    )
     print(f"Created {cfg}")
 
 
@@ -104,7 +108,8 @@ def _write_theme(root: Path) -> None:
 
     base = theme / "templates" / "base.html"
     if not base.exists():
-        base.write_text("""<!DOCTYPE html>
+        base.write_text(
+            """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -116,12 +121,15 @@ def _write_theme(root: Path) -> None:
   {% block body %}{% endblock %}
 </body>
 </html>
-""", encoding="utf-8")
+""",
+            encoding="utf-8",
+        )
         print(f"Created {base}")
 
     page = theme / "templates" / "page.html"
     if not page.exists():
-        page.write_text("""{% extends "base.html" %}
+        page.write_text(
+            """{% extends "base.html" %}
 {% block title %}{{ page.title }} | {{ site.title }}{% endblock %}
 {% block body %}
 <article>
@@ -129,12 +137,15 @@ def _write_theme(root: Path) -> None:
   {{ page.content | safe }}
 </article>
 {% endblock %}
-""", encoding="utf-8")
+""",
+            encoding="utf-8",
+        )
         print(f"Created {page}")
 
     post = theme / "templates" / "post.html"
     if not post.exists():
-        post.write_text("""{% extends "base.html" %}
+        post.write_text(
+            """{% extends "base.html" %}
 {% block title %}{{ post.title }} | {{ site.title }}{% endblock %}
 {% block body %}
 <article>
@@ -143,12 +154,15 @@ def _write_theme(root: Path) -> None:
   {{ post.content | safe }}
 </article>
 {% endblock %}
-""", encoding="utf-8")
+""",
+            encoding="utf-8",
+        )
         print(f"Created {post}")
 
     index = theme / "templates" / "index.html"
     if not index.exists():
-        index.write_text("""{% extends "base.html" %}
+        index.write_text(
+            """{% extends "base.html" %}
 {% block title %}{{ site.title }}{% endblock %}
 {% block body %}
 <header><h1>{{ site.title }}</h1></header>
@@ -158,7 +172,9 @@ def _write_theme(root: Path) -> None:
   {% endfor %}
 </ul>
 {% endblock %}
-""", encoding="utf-8")
+""",
+            encoding="utf-8",
+        )
         print(f"Created {index}")
 
 
@@ -170,9 +186,8 @@ def _update_gitignore(root: Path) -> None:
         print(f"Created {gi}")
         return
     text = gi.read_text()
-    for line in additions:
-        if line not in text and (line.rstrip("/") not in text):
-            text = text.rstrip() + "\n" + line + "\n"
-            gi.write_text(text, encoding="utf-8")
-            print(f"Updated {gi}")
-            break
+    missing = [a for a in additions if a not in text]
+    if missing:
+        text = text.rstrip() + "\n" + "\n".join(missing) + "\n"
+        gi.write_text(text, encoding="utf-8")
+        print(f"Updated {gi}")
