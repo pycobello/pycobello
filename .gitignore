@@ -13,3 +13,4 @@ wheels/
 theme/
 pycobello.yml
 content/
+!src/pycobello/build
