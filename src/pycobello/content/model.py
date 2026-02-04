@@ -1,12 +1,14 @@
 """Dataclasses for content items."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import date
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 
 
-class ContentKind(str, Enum):
+class ContentKind(StrEnum):
     """Post or page."""
 
     POST = "post"
