@@ -33,14 +33,17 @@ def _serve(dist: Path, port: int) -> None:
     class Handler(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *a, **k):
             super().__init__(*a, directory=str(dist), **k)
+
     with socketserver.TCPServer(("", port), Handler) as httpd:
         print(f"Serving {dist} at http://127.0.0.1:{port}/")
         httpd.serve_forever()
 
 
 def _run_with_watch(root: Path, dist: Path, port: int) -> None:
-    from pycobello.config.load import load_config
+    from watchfiles import watch
+
     from pycobello.build.pipeline import run_pipeline
+    from pycobello.config.load import load_config
 
     def rebuild() -> None:
         try:
@@ -57,7 +60,7 @@ def _run_with_watch(root: Path, dist: Path, port: int) -> None:
         daemon=True,
     )
     server_thread.start()
-    watch_dirs = [root / "content", root / "theme", root / "static", root / "pycobello.yml"]
-    for change in watch(*watch_dirs):
-        print(f"Change: {change}")
+    watch_dirs = [root / "content", root / "theme", root / "static", root]
+    for changes in watch(*watch_dirs):
+        print(f"Change: {changes}")
         rebuild()
