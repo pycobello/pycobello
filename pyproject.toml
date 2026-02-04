@@ -1,14 +1,52 @@
 [project]
 name = "pycobello"
 version = "0.1.0"
-description = "Add your description here"
+description = "A blazing fast, dependency-light static site generator"
 readme = "README.md"
 authors = [
     { name = "maximiliancw", email = "wunderkind.serie-0f@icloud.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "typer>=0.12.0",
+    "jinja2>=3.1.0",
+    "markdown-it-py>=3.0.0",
+    "pyyaml>=6.0",
+    "python-slugify>=8.0",
+]
+
+[project.optional-dependencies]
+watch = ["watchfiles>=0.21.0"]
+
+[project.scripts]
+pycobello = "pycobello.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.9.26,<0.10.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.8.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+]
+ignore = ["E501"]  # line length handled by formatter
+
+[tool.ruff.format]
+quote-style = "double"
