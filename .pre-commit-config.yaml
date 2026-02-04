@@ -8,9 +8,18 @@ repos:
       - id: check-added-large-files
         args: [--maxkb=1000]
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.0
+  # Use project ruff (same as CI) so rules match exactly
+  - repo: local
     hooks:
       - id: ruff-check
-        args: [--fix]
+        name: ruff check
+        entry: uv run ruff check . --fix
+        language: system
+        types: [python]
+        pass_filenames: false
       - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format .
+        language: system
+        types: [python]
+        pass_filenames: false
