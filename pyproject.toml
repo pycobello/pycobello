@@ -1,6 +1,6 @@
 [project]
 name = "pycobello"
-version = "0.1.0-alpha"
+version = "0.1.1-alpha"
 description = "A blazing fast, dependency-light static site generator"
 readme = "README.md"
 authors = [
