@@ -1,6 +1,6 @@
 """Jinja env and template rendering. Step 5."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -14,7 +14,7 @@ def create_env(templates_dir: Path, site: dict, collections: dict) -> Environmen
     )
     env.globals["site"] = site
     env.globals["collections"] = collections
-    env.globals["now"] = datetime.now(timezone.utc)
+    env.globals["now"] = datetime.now(UTC)
 
     def url_for(path: str) -> str:
         base = (site.get("base_url") or "").rstrip("/")

@@ -1,6 +1,5 @@
 """Plugin hooks and app API."""
 
-
 from pycobello.api.app import PyCobelloApp
 from pycobello.plugins.hooks import emit, register
 
