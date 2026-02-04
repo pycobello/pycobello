@@ -38,7 +38,9 @@ class CollectionsSettings:
     """Posts and pages collection config."""
 
     posts: CollectionConfig = field(
-        default_factory=lambda: CollectionConfig(path="posts", url_prefix="blog", template="post.html")
+        default_factory=lambda: CollectionConfig(
+            path="posts", url_prefix="blog", template="post.html"
+        )
     )
     pages: CollectionConfig = field(
         default_factory=lambda: CollectionConfig(path="pages", url_prefix="", template="page.html")

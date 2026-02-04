@@ -20,15 +20,15 @@ def load_config(project_root: str = ".", config_path: str | None = None) -> PyCo
     root = Path(project_root).resolve()
     path = root / (config_path or "pycobello.yml")
     if not path.is_file():
-        raise ConfigError(
-            f"Config not found: {path}. Run 'pycobello init' to create a new site."
-        )
+        raise ConfigError(f"Config not found: {path}. Run 'pycobello init' to create a new site.")
     try:
         raw = yaml.safe_load(path.read_text()) or {}
     except yaml.YAMLError as e:
         raise ConfigError(f"Invalid YAML in {path}: {e}") from e
     if not isinstance(raw, dict):
-        raise ConfigError(f"Config must be a YAML object (key-value map), got {type(raw).__name__}.")
+        raise ConfigError(
+            f"Config must be a YAML object (key-value map), got {type(raw).__name__}."
+        )
     try:
         return _settings_from_dict(raw)
     except (TypeError, KeyError) as e:
