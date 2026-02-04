@@ -69,6 +69,15 @@ Templates live in `theme/templates/`. Required:
 
 Context: `site`, `collections`, current `page` or `post`. Helpers: `url_for`, filter `datefmt`.
 
+## Development
+
+```bash
+uv sync --all-groups
+uv run pre-commit install
+```
+
+Linting (ruff check) and formatting (ruff format) run automatically before each commit. To run them manually: `uv run ruff check .`, `uv run ruff format .`, and `uv run pytest`.
+
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).
