@@ -14,6 +14,7 @@ def generate_workflow(project_root: str) -> None:
     print(f"Wrote {path}")
     print("Enable GitHub Pages: Repo → Settings → Pages → Source: GitHub Actions.")
 
+
 def _workflow_content() -> str:
     return """# GitHub Pages deploy via pycobello
 name: Deploy to GitHub Pages

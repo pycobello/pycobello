@@ -1,6 +1,6 @@
 """Hook registry and event dispatch. Step 10."""
 
-from typing import Callable
+from collections.abc import Callable
 
 HOOK_NAMES = (
     "config_loaded",

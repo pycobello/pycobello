@@ -18,9 +18,9 @@ def run_checks(project_root: str) -> None:
     content_dir = root / config.build.content_dir
     errors: list[str] = []
 
-    from pycobello.diagnostics.slugs import check_duplicate_urls
     from pycobello.diagnostics.frontmatter import check_required_frontmatter
     from pycobello.diagnostics.links import check_internal_links
+    from pycobello.diagnostics.slugs import check_duplicate_urls
 
     errors.extend(check_duplicate_urls(content_dir, config))
     errors.extend(check_required_frontmatter(content_dir, config))
@@ -34,4 +34,5 @@ def run_checks(project_root: str) -> None:
 
 def _err(msg: str) -> None:
     import sys
+
     print(msg, file=sys.stderr)

@@ -2,7 +2,7 @@
 
 from pycobello.content.discovery import discover_items
 from pycobello.content.frontmatter import parse_frontmatter
-from pycobello.content.markdown import markdown_to_html, get_tokens
+from pycobello.content.markdown import get_tokens, markdown_to_html
 from pycobello.content.model import ContentItem, ContentKind
 
 __all__ = [

@@ -20,6 +20,7 @@ class PyCobelloApp:
 
     def register_hook(self, hook_name: str, handler: Any) -> None:
         from pycobello.plugins.hooks import register
+
         register(hook_name, handler)
 
     @property
