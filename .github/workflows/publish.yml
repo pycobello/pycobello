@@ -17,12 +17,14 @@ permissions:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    env:
+      PUBLISH_TAG: ${{ github.event.release.tag_name || github.event.inputs.tag }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          ref: ${{ env.PUBLISH_TAG }}
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -49,11 +51,11 @@ jobs:
 
       - name: Check version matches tag
         run: |
-          TAG="${{ github.event.release.tag_name || inputs.tag }}"
+          TAG="${{ env.PUBLISH_TAG }}"
           TAG_VERSION="${TAG#v}"
           PYPROJECT_VERSION=$(grep '^version = ' pyproject.toml | cut -d'"' -f2)
           if [ "$TAG_VERSION" != "$PYPROJECT_VERSION" ]; then
-            echo "Tag version ($TAG_VERSION) does not match pyproject.toml version ($PYPROJECT_VERSION)"
+            echo "::error::Tag version ($TAG_VERSION) does not match pyproject.toml version ($PYPROJECT_VERSION)"
             exit 1
           fi
 
