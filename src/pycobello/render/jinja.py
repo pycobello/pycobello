@@ -1,11 +1,9 @@
 """Jinja env and template rendering. Step 5."""
 
+from datetime import datetime, timezone
 from pathlib import Path
-from datetime import datetime
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-
-from pycobello.render.context import build_context
 
 
 def create_env(templates_dir: Path, site: dict, collections: dict) -> Environment:
@@ -16,7 +14,7 @@ def create_env(templates_dir: Path, site: dict, collections: dict) -> Environmen
     )
     env.globals["site"] = site
     env.globals["collections"] = collections
-    env.globals["now"] = datetime.utcnow()
+    env.globals["now"] = datetime.now(timezone.utc)
 
     def url_for(path: str) -> str:
         base = (site.get("base_url") or "").rstrip("/")
@@ -33,7 +31,20 @@ def create_env(templates_dir: Path, site: dict, collections: dict) -> Environmen
         return str(d)
 
     env.filters["datefmt"] = datefmt
+    _apply_plugin_jinja(env)
     return env
+
+
+def _apply_plugin_jinja(env: Environment) -> None:
+    """Add plugin-registered filters and globals to the Jinja env."""
+    try:
+        from pycobello.api.app import get_app
+
+        app = get_app()
+        env.globals.update(app.jinja_globals)
+        env.filters.update(app.jinja_filters)
+    except Exception:
+        pass
 
 
 def render_template(
