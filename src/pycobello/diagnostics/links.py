@@ -2,9 +2,8 @@
 
 from pathlib import Path
 
-from pycobello.content.frontmatter import parse_frontmatter
-from pycobello.content.markdown import get_tokens
 from pycobello.content.discovery import discover_items
+from pycobello.content.markdown import get_tokens
 
 
 def check_internal_links(content_dir: Path, config) -> list[str]:
@@ -19,7 +18,7 @@ def check_internal_links(content_dir: Path, config) -> list[str]:
     for item in items:
         tokens = get_tokens(item.body_markdown)
         for t in _iter_links(tokens):
-            href = (getattr(t, "attrGet", lambda _: None)("href") or "")
+            href = getattr(t, "attrGet", lambda _: None)("href") or ""
             if not href or href.startswith(("#", "http://", "https://", "mailto:")):
                 continue
             if href.startswith("/"):
@@ -36,10 +35,12 @@ def _iter_links(tokens):
     for t in tokens:
         if t.type == "link_open":
             yield t
-        if getattr(t, "children", None):
-            for c in t.children:
-                if c.type == "link_open":
-                    yield c
+        try:
+            children = t.children
+        except AttributeError:
+            children = []
+        yield from _iter_links(children or [])
+
 
 def _resolve_relative(href: str, base_url_path: str) -> str:
     """Resolve relative href from base url path. Best-effort."""
